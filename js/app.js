@@ -9,12 +9,12 @@
       function($http, $log, leafletData) {
     var map = this;
 
-    leafletData.getMap().then(function(m) {
-      map.map = m;
-      map.map.on('mousemove', function(e) {
-        map.event = e.latlng;
-      });
-    });
+    // leafletData.getMap().then(function(m) {
+      // map.map = m;
+      // map.map.on('mousemove', function(e) {
+        // map.event = e.latlng;
+      // });
+    // });
 
 
     var rootURL = 'http://john.bitsurge.net/bikeracks';
@@ -26,16 +26,6 @@
         imageURL + '/parking_bicycle_cluster_shadow_0.png'
     };
 
-    map.tiles = (function() {
-          var s = new L.StamenTileLayer('terrain', {});
-          $log.log(s);
-          return {
-            name: 'Stamen Terrain',
-            url: s._url,
-            type: 'xyz',
-            options: s.options
-          };
-    }());
     map.layers = {
       baselayers: {
         stamenterrain: (function() {
@@ -88,7 +78,7 @@
       }
     };
 
-    map.markers = {};
+    map.markers = [];
     $http.get(rackURL).success(function(json) {
       map.markers = _.map(json, function(rack) {
         return {
