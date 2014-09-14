@@ -52,7 +52,7 @@
         publicRacks: {
           name: 'Public Bike Racks',
           type: 'markercluster',
-          visible: false,
+          visible: true,
           layerOptions: {
             maxClusterRadius: 30,
             iconCreateFunction: function iconCreateFunction(cluster) {
