@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="bikeracks">
+  <head>
+    <title>Bike Rack Locations</title>
+
+    <script src="bower_components/jquery/dist/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="bower_components/lodash/dist/lodash.js" type="text/javascript" charset="utf-8"></script>
+    <script src="bower_components/leaflet/dist/leaflet.js" type="text/javascript" charset="utf-8"></script>
+    <script src="bower_components/leaflet.markercluster/dist/leaflet.markercluster.js" type="text/javascript" charset="utf-8"></script>
+    <script src="bower_components/angular/angular.js" type="text/javascript" charset="utf-8"></script>
+    <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js" type="text/javascript" charset="utf-8"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0" type="text/javascript" charset="utf-8"></script>
+
+    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="bower_components/leaflet.markercluster/dist/MarkerCluster.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" type="text/css" media="all" />
+
+    <link rel="stylesheet" type="text/css" href="MarkerCluster.css" />
+    <link rel="stylesheet" type="text/css" href="MarkerCluster.0.css" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
+  </head>
+  <body>
+    <div ng-controller='MapController as map'>
+      <div class="row">London forever: {{ map.london }}</div>
+      <div class="row">Current center: {{ map.center }}</div>
+      <div class="row">Current Event: {{ map.event }}</div>
+      <div class="row">Current Leaflet Event: {{ map.leafletEvent }}</div>
+      <div class="row" id="map">
+        <leaflet class='expand' markers='map.markers' center='map.center' layers='map.layers'></leaflet>
+      </div>
+      <div class="row">
+        Markers: <pre ng-bind='map.markers | json'></pre>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript" src="app.js"></script>
+</html>
+

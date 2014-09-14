@@ -1,0 +1,22 @@
+
+/* .clearfix { */
+    /* overflow: auto; */
+/* } */
+
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.expand {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    max-width: 800px;
+    padding: 10px 30px;
+}

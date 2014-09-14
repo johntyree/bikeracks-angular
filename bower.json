@@ -1,0 +1,30 @@
+{
+  "name": "bikeracks",
+  "version": "0.0.0",
+  "authors": [
+    "John Tyree <johntyree@gmail.com>"
+  ],
+  "description": "Public bike rack locations",
+  "main": "?",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "homepage": "johntyree.github.io/bikeracks",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-leaflet-directive": "~0.7.8",
+    "angular": "~1.2.24",
+    "bootstrap": "~3.2.0",
+    "leaflet.markercluster": "~0.4.0",
+    "leaflet": "~0.7.3",
+    "lodash": "~2.4.1"
+  }
+}
