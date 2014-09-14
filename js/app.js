@@ -26,6 +26,17 @@
         imageURL + '/parking_bicycle_cluster_shadow_0.png'
     };
 
+    map.events = {
+      map: {
+        enable: [],
+        logic: 'emit'
+      },
+      marker: {
+        enable: [],
+        logic: 'emit'
+      }
+    };
+
     map.layers = {
       baselayers: {
         stamenterrain: (function() {
@@ -44,6 +55,7 @@
           type: 'markercluster',
           visible: true,
           layerOptions: {
+            chunkedLoading: true,
             maxClusterRadius: 30,
             iconCreateFunction: function iconCreateFunction(cluster) {
 

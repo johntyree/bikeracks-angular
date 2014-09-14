@@ -24,7 +24,7 @@
   <body>
     <div ng-controller='MapController as map'>
       <div id="map">
-        <leaflet class='expand' markers='map.markers' center='map.center' layers='map.layers'></leaflet>
+        <leaflet class='expand' markers='map.markers' event-broadcast='map.events' watch-markers='no' watch-layers='no' center='map.center' layers='map.layers'></leaflet>
       </div>
     </div>
   </body>
