@@ -23,18 +23,10 @@
   </head>
   <body>
     <div ng-controller='MapController as map'>
-      <div class="row">London forever: {{ map.london }}</div>
-      <div class="row">Current center: {{ map.center }}</div>
-      <div class="row">Current Event: {{ map.event }}</div>
-      <div class="row">Current Leaflet Event: {{ map.leafletEvent }}</div>
-      <div class="row" id="map">
+      <div id="map">
         <leaflet class='expand' markers='map.markers' center='map.center' layers='map.layers'></leaflet>
-      </div>
-      <div class="row">
-        Markers: <pre ng-bind='map.markers | json'></pre>
       </div>
     </div>
   </body>
   <script type="text/javascript" src="js/app.js"></script>
 </html>
-

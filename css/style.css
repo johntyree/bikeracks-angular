@@ -3,6 +3,12 @@
     /* overflow: auto; */
 /* } */
 
+body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
 #map {
     position: absolute;
     top: 0;
@@ -16,7 +22,16 @@
     width: 100%;
 }
 
-body {
-    max-width: 800px;
-    padding: 10px 30px;
+.leaflet-container.rack-thumbnail {
+    /* center the thumbnail */
+    max-height: 100%;
+    max-width: 300px !important;
+    /* width: 100%; */
+    margin: auto;
+}
+
+.leaflet-container .rack-thumbnail img {
+    position: relative;
+    /* `leaflet-container img` sets `max-width: none !important` :( */
+    max-height: 100%;
 }
