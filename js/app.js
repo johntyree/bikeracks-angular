@@ -5,17 +5,38 @@
 
   var app = angular.module('bikeracks', ['leaflet-directive']);
 
-  app.controller('MapController', ['$http', '$log', 'leafletData',
-      function($http, $log, leafletData) {
+  // app.factory('GetContentService', function() {
+    // var service = {};
+
+    // service.getContent = function() {
+      // return {
+        // title: 'Hello',
+        // content: 'Some content, way to loooooooooooooonnnnnnnnnnnnngggggggggg.'
+      // };
+    // };
+    // return service;
+  // });
+
+  // app.directive('popup', function(GetContentService) {
+    // return {
+      // restrict: 'A',
+      // templateUrl: 'templates/marker-popup.html',
+      // scope: { content: {} },
+      // controller: function($scope, $timeout) {
+        // $scope.getContent = function() {
+          // // Simulate a call to the server to get data
+          // $timeout(function() {
+              // $scope.content = GetContentService.getContent();
+          // }, 200);
+        // };
+      // }
+    // };
+  // });
+
+
+  app.controller('MapController', ['$http', '$scope', '$compile',
+                 function($http, $scope, $compile) {
     var map = this;
-
-    // leafletData.getMap().then(function(m) {
-      // map.map = m;
-      // map.map.on('mousemove', function(e) {
-        // map.event = e.latlng;
-      // });
-    // });
-
 
     var rootURL = 'http://john.bitsurge.net/bikeracks';
     var rackURL = rootURL + '/static/data/austin_racks_v1.json';
@@ -27,12 +48,8 @@
     };
 
     map.events = {
-      map: {
-        enable: [],
-        logic: 'emit'
-      },
       marker: {
-        enable: [],
+        enable: ['popupopen'],
         logic: 'emit'
       }
     };
@@ -90,12 +107,37 @@
       }
     };
 
+    var childscope = $scope.$new();
+    var popupContent = angular.element(
+      '<div ng-include="\'templates/marker-popup.html\'"></div>')[0];
+    $scope.$on('leafletDirectiveMarker.popupopen', function(event, args) {
+      var marker = $scope.map.markers[args.markerName];
+      childscope.marker = marker;
+      var node = angular.element(args.leafletEvent.target._popup._contentNode);
+      var url = 'http://john.bitsurge.net/bikeracks/get/2';// + args.markerName;
+      if (!marker.photos.length) {
+        $http.get(url).success(function(photos) {
+          marker.photos = photos.slice(0, 1);
+        });
+      }
+      $compile(popupContent)(childscope, function(popupContentNode) {
+        node.empty();
+        node[0].appendChild(popupContentNode[0]);
+      });
+    });
+
     map.markers = [];
     $http.get(rackURL).success(function(json) {
       map.markers = _.map(json, function(rack) {
         return {
           layer: 'publicRacks',
-          message: rack.address,
+          // Leaflet *hardcodes* popup size based on content.
+          // This miserable hack is to force popups to be wide before the
+          // dynamic content has loaded so that leaflet doesn't force
+          // everything into a 20px column :(.
+          message: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+          address: rack.address,
+          photos: [],
           lat: rack.lat,
           lng: rack.lng,
           icon: {

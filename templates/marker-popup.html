@@ -1,0 +1,12 @@
+<div class="popupContent expand">
+    <div class="rack-thumbnail">
+        <div ng-show="marker.photos.length" ng-repeat="photo in marker.photos">
+            <img ng-src="{{photo[0]}}"></img>
+        </div>
+    </div>
+    <div>{{marker.address}}</div>
+</div>
+
+<!-- <div class="button photoButton" ng-click="takeAPhoto()"> -->
+    <!-- Take a photo -->
+<!-- </div>; -->
