@@ -5,9 +5,12 @@
             <img ng-src="{{marker.currentPhoto}}"></img>
         </div>
     </div>
-    <div>{{marker.address}}</div>
+    <div class="rack-info">
+        <div>{{marker.address}}</div>
+        <div class="hidden">
+            <input type="file" ng-model='text' id="photoChooser" marker={{marker.id}} accept="image/*" capture>
+        </div>
+        <button class="btn btn-primary"
+                onclick="takePhoto()">Take a photo...</button>
+    </div>
 </div>
-
-<!-- <div class="button photoButton" ng-click="takeAPhoto()"> -->
-    <!-- Take a photo -->
-<!-- </div>; -->
