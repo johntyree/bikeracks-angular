@@ -150,25 +150,13 @@
       });
     });
 
-    map.london = {
-      lat: 51.505,
-      lng: -0.09,
-      zoom: 8
-    };
-
     map.austin = {
-      lat: 30.26,
-      lng: -97.77,
+      lat: 30.27,
+      lng: -97.76,
       zoom: 14
     };
 
-    map.taiwan = {
-      lat: 25.0391667,
-      lng: 121.525,
-      zoom: 8
-    };
-
-    map.center = angular.extend({}, map.austin);
+    map.center = angular.copy(map.austin);
 
   }]);
 
