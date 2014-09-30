@@ -23,19 +23,28 @@ body {
 }
 
 .popupContent {
-    width: 320px;
+    margin: auto;
+    text-align: center;
+}
+
+.modal-body img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}
+
+.leaflet-container .rack-info {
 }
 
 .leaflet-container.rack-thumbnail {
     /* center the thumbnail */
     max-height: 100%;
-    max-width: 320px !important;
     margin: auto;
 }
 
 .leaflet-container .rack-thumbnail img {
-    position: relative;
+    display: block;
     /* `leaflet-container img` sets `max-width: none !important` :( */
     max-height: 100%;
-    max-width: 300px !important;
+    max-width: 100% !important;
 }
