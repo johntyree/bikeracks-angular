@@ -144,6 +144,7 @@ function takePhoto(id, callback) {
       if (!marker.photos.length) {
         $http.get(url).success(function(photos) {
           marker.photos = photos.slice(0, 1);
+          marker.currentPhoto = marker.photos[0][0];
         });
       }
       $compile(popupContent)(childscope, function(popupContentNode) {
@@ -164,6 +165,7 @@ function takePhoto(id, callback) {
           message: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           address: rack.address,
           photos: [],
+          currentPhoto: "",
           lat: rack.lat,
           lng: rack.lng,
           icon: {

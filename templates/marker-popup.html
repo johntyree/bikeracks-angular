@@ -1,7 +1,7 @@
 <div class="popupContent expand">
     <div class="rack-thumbnail">
         <div ng-show="marker.photos.length" ng-repeat="photo in marker.photos">
-            <img ng-src="{{photo[0]}}"></img>
+            <img ng-src="{{marker.currentPhoto}}"></img>
         </div>
     </div>
     <div>{{marker.address}}</div>
