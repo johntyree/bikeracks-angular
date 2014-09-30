@@ -156,6 +156,8 @@ function takePhoto(id, callback) {
     map.markers = [];
     $http.get(rackURL).success(function(json) {
       map.markers = _.map(json, function(rack) {
+        function f(n) { return Math.floor(n*1e6).toString() }
+        var id = f(rack.lat) + f(rack.lng);
         return {
           layer: 'publicRacks',
           // Leaflet *hardcodes* popup size based on content.
@@ -163,6 +165,7 @@ function takePhoto(id, callback) {
           // dynamic content has loaded so that leaflet doesn't force
           // everything into a 20px column :(.
           message: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+          id: id,
           address: rack.address,
           photos: [],
           currentPhoto: "",
