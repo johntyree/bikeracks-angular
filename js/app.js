@@ -1,11 +1,37 @@
 /* jslint global: angular */
 'use strict';
 
+function takePhoto(id, callback) {
+  console.log('start', id);
+  var photoChooser = $('#photoChooser');
+  photoChooser.click();
+  var id = photoChooser.attr('marker');
+  photoChooser.on('change', function() {
+      console.log('change fired');
+      var file = photoChooser[0].files[0];
+      console.log(file);
+      var reader = new FileReader();
+      reader.onload = function() {
+          console.log('loaded');
+          var img = $('#currentPhoto');
+          img.attr('src', reader.result);
+          var dataURL = reader.result;
+          $('#confirmPhotoUpload').click();
+          callback && callback(reader.result);
+      };
+      reader.onerror = function() {
+          alert('Error uploading file!');
+      };
+      reader.readAsDataURL(file);
+  });
+}
+
+
 (function(_, L, angular) {
 
   var app = angular.module('bikeracks', ['leaflet-directive']);
 
-  // app.factory('GetContentService', function() {
+ // app.factory('GetContentService', function() {
     // var service = {};
 
     // service.getContent = function() {
