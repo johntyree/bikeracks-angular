@@ -1,7 +1,7 @@
 
-/* .clearfix { */
-    /* overflow: auto; */
-/* } */
+.clearfix {
+    overflow: auto;
+}
 
 body {
     margin: 0;
@@ -22,11 +22,14 @@ body {
     width: 100%;
 }
 
+.popupContent {
+    width: 320px;
+}
+
 .leaflet-container.rack-thumbnail {
     /* center the thumbnail */
     max-height: 100%;
-    max-width: 300px !important;
-    /* width: 100%; */
+    max-width: 320px !important;
     margin: auto;
 }
 
@@ -34,4 +37,5 @@ body {
     position: relative;
     /* `leaflet-container img` sets `max-width: none !important` :( */
     max-height: 100%;
+    max-width: 300px !important;
 }
