@@ -39,51 +39,49 @@
 
     $log.log($scope);
 
-    $scope.takePhoto = function takePhoto() {
+    var marker = $scope.$parent.$parent.marker;
 
-      var marker = $scope.$parent.$parent.marker;
-      $scope.marker = marker;
+    var photoChooser = $('#photo-chooser');
+    photoChooser.on('change', function() {
+      $log.log('change fired');
+      var file = photoChooser[0].files[0];
+      $log.log(file);
+      var reader = new FileReader();
+      reader.onload = function() {
+        $log.log('loaded');
+        var photoURL = reader.result;
+        var modalInstance = $modal.open({
+          templateUrl: 'templates/submit-modal.html',
+          controller: 'ModalInstanceCtrl',
+          size: '',
+          resolve: {
+            photoURL: function() {
+              return photoURL;
+            }
+          }
+        });
+
+        modalInstance.result.then(
+          function success(result) {
+            $log.log(result);
+            marker.photos.push(result);
+            marker.currentPhoto = result;
+          },
+          function failure(error) {
+            $log.log(error);
+          }
+        );
+      };
+      reader.onerror = function() {
+        alert('Error uploading file!');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    $scope.takePhoto = function takePhoto() {
       var id = marker.id;
       $log.log('start', id);
-      var photoChooser = $('#photo-chooser');
       photoChooser.click();
-
-      photoChooser.one('change', function() {
-        $log.log('change fired');
-        var file = photoChooser[0].files[0];
-        $log.log(file);
-        var reader = new FileReader();
-        reader.onload = function() {
-          $log.log('loaded');
-          var photoURL = reader.result;
-          var modalInstance = $modal.open({
-            templateUrl: 'templates/submit-modal.html',
-            controller: 'ModalInstanceCtrl',
-            size: '',
-            resolve: {
-              photoURL: function() {
-                return photoURL;
-              }
-            }
-          });
-
-          modalInstance.result.then(
-            function success(result) {
-              $log.log(result);
-              marker.photos.push(result)
-              marker.currentPhoto = result;
-            },
-            function failure(error) {
-              $log.log(error);
-            }
-          );
-        };
-        reader.onerror = function() {
-          alert('Error uploading file!');
-        };
-        reader.readAsDataURL(file);
-      });
-
     };
 
   }]);
@@ -96,7 +94,7 @@
     };
 
     $scope.cancel = function() {
-      $modalInstance.dismiss();
+      $modalInstance.dismiss('Submission canceled.');
     };
   }]);
 
