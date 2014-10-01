@@ -34,7 +34,7 @@ body {
 }
 
 .leaflet-container .rack-info {
-    line-height: 2;
+    padding: 10px 0px;
 }
 
 .leaflet-container.rack-thumbnail {
