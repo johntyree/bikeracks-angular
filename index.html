@@ -12,6 +12,7 @@
 
     <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js" type="text/javascript" charset="utf-8"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js" type="text/javascript" charset="utf-8"></script>
     <script src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0" type="text/javascript" charset="utf-8"></script>
 
     <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" type="text/css" media="all" />
@@ -32,27 +33,6 @@
                  layers='map.layers'></leaflet>
       </div>
     </div>
-<!-- Modal -->
-<div class="modal fade" id="photoConfirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Submit Photo?</h4>
-      </div>
-      <div class="modal-body">
-        <img id="currentPhoto" src="" alt="" />
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Submit</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Button trigger modal -->
-<button id="confirmPhotoUpload" class="hidden btn btn-primary btn-lg" data-toggle="modal"
-    data-target="#photoConfirmation" />
+    <script type="text/javascript" src="js/app.js"></script>
   </body>
-  <script type="text/javascript" src="js/app.js"></script>
 </html>

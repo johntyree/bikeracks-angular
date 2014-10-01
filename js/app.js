@@ -1,35 +1,10 @@
 /* jslint global: angular */
 'use strict';
 
-function takePhoto(id, callback) {
-  console.log('start', id);
-  var photoChooser = $('#photoChooser');
-  photoChooser.click();
-  var id = photoChooser.attr('marker');
-  photoChooser.one('change', function() {
-      console.log('change fired');
-      var file = photoChooser[0].files[0];
-      console.log(file);
-      var reader = new FileReader();
-      reader.onload = function() {
-          console.log('loaded');
-          var img = $('#currentPhoto');
-          img.attr('src', reader.result);
-          var dataURL = reader.result;
-          $('#confirmPhotoUpload').click();
-          callback && callback(reader.result);
-      };
-      reader.onerror = function() {
-          alert('Error uploading file!');
-      };
-      reader.readAsDataURL(file);
-  });
-}
-
 
 (function(_, L, angular) {
 
-  var app = angular.module('bikeracks', ['leaflet-directive']);
+  var app = angular.module('bikeracks', ['leaflet-directive', 'ui.bootstrap']);
 
  // app.factory('GetContentService', function() {
     // var service = {};
@@ -59,6 +34,68 @@ function takePhoto(id, callback) {
     // };
   // });
 
+  app.controller('SubmitModalCtrl', ['$scope', '$modal', '$log',
+                 function($scope, $modal, $log) {
+
+    $log.log($scope);
+
+    $scope.takePhoto = function takePhoto() {
+
+      var marker = $scope.$parent.$parent.marker;
+      $scope.marker = marker;
+      var id = marker.id;
+      $log.log('start', id);
+      var photoChooser = $('#photo-chooser');
+      photoChooser.click();
+
+      photoChooser.one('change', function() {
+        $log.log('change fired');
+        var file = photoChooser[0].files[0];
+        $log.log(file);
+        var reader = new FileReader();
+        reader.onload = function() {
+          $log.log('loaded');
+          var dataURL = reader.result;
+          var modalInstance = $modal.open({
+            templateUrl: 'templates/submit-modal.html',
+            controller: 'ModalInstanceCtrl',
+            size: 'sm',
+            resolve: {
+              photo: function() {
+                return dataURL;
+              }
+            }
+          });
+
+          modalInstance.result.then(
+            function success(result) {
+              $log.log(result);
+            },
+            function failure(error) {
+              $log.log(error);
+            }
+          );
+        };
+        reader.onerror = function() {
+          alert('Error uploading file!');
+        };
+        reader.readAsDataURL(file);
+      });
+
+    };
+
+  }]);
+
+  app.controller('ModalInstanceCtrl', ['$scope', '$modalInstance',
+                 function($scope, $modalInstance) {
+    $scope.submit = function() {
+      $modalInstance.close();
+    };
+
+    $scope.cancel = function() {
+      $modalInstance.dismiss();
+    };
+  }]);
 
   app.controller('MapController', ['$http', '$scope', '$compile',
                  function($http, $scope, $compile) {

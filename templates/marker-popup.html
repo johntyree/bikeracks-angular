@@ -9,9 +9,10 @@
     <div class="rack-info">
         <div>{{marker.address}}</div>
     </div>
-    <div class="hidden">
-        <input type="file" ng-model='text' id="photoChooser" marker={{marker.id}} accept="image/*" capture>
+    <div ng-controller="SubmitModalCtrl">
+        <div class='hidden'>
+            <input type="file" ng-model='photoFile' id="photo-chooser" accept="image/*" capture>
+        </div>
+        <button id="launch" class="btn btn-primary" ng-click="takePhoto()">Take a photo...</button>
     </div>
-    <button class="btn btn-primary"
-            onclick="takePhoto()">Take a photo...</button>
 </div>
