@@ -55,14 +55,14 @@
         var reader = new FileReader();
         reader.onload = function() {
           $log.log('loaded');
-          var dataURL = reader.result;
+          var photoURL = reader.result;
           var modalInstance = $modal.open({
             templateUrl: 'templates/submit-modal.html',
             controller: 'ModalInstanceCtrl',
-            size: 'sm',
+            size: '',
             resolve: {
-              photo: function() {
-                return dataURL;
+              photoURL: function() {
+                return photoURL;
               }
             }
           });
@@ -70,6 +70,8 @@
           modalInstance.result.then(
             function success(result) {
               $log.log(result);
+              marker.photos.push(result)
+              marker.currentPhoto = result;
             },
             function failure(error) {
               $log.log(error);
@@ -86,10 +88,11 @@
 
   }]);
 
-  app.controller('ModalInstanceCtrl', ['$scope', '$modalInstance',
-                 function($scope, $modalInstance) {
+  app.controller('ModalInstanceCtrl', ['$scope', '$modalInstance', 'photoURL',
+                 function($scope, $modalInstance, photoURL) {
+    $scope.candidatePhoto = photoURL;
     $scope.submit = function() {
-      $modalInstance.close();
+      $modalInstance.close(photoURL);
     };
 
     $scope.cancel = function() {
@@ -179,11 +182,16 @@
       var node = angular.element(args.leafletEvent.target._popup._contentNode);
       var url = 'http://john.bitsurge.net/bikeracks/get/2';// + args.markerName;
       childscope.loading = true;
-      $http.get(url).success(function(photos) {
-        marker.photos = photos.slice(0, 1);
-        marker.currentPhoto = marker.photos[0][0];
+      if (!marker.photos.length) {
+          $http.get(url).success(function(photos) {
+            marker.photos = photos;
+            marker.currentPhoto = _.last(marker.photos)[0];
+            childscope.loading = false;
+          });
+      } else {
+        marker.currentPhoto = marker.currentPhoto || _.last(marker.photos)[0];
         childscope.loading = false;
-      });
+      }
       $compile(popupContent)(childscope, function(popupContentNode) {
         node.empty();
         node[0].appendChild(popupContentNode[0]);
