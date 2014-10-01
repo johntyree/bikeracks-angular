@@ -34,6 +34,7 @@ body {
 }
 
 .leaflet-container .rack-info {
+    line-height: 2;
 }
 
 .leaflet-container.rack-thumbnail {
@@ -47,4 +48,10 @@ body {
     /* `leaflet-container img` sets `max-width: none !important` :( */
     max-height: 100%;
     max-width: 100% !important;
+}
+
+.leaflet-container .rack-thumbnail i {
+    margin: 10px;
+    color: gray;
+    font-size: 10em;
 }

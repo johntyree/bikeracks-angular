@@ -6,7 +6,7 @@ function takePhoto(id, callback) {
   var photoChooser = $('#photoChooser');
   photoChooser.click();
   var id = photoChooser.attr('marker');
-  photoChooser.on('change', function() {
+  photoChooser.one('change', function() {
       console.log('change fired');
       var file = photoChooser[0].files[0];
       console.log(file);
@@ -141,12 +141,12 @@ function takePhoto(id, callback) {
       childscope.marker = marker;
       var node = angular.element(args.leafletEvent.target._popup._contentNode);
       var url = 'http://john.bitsurge.net/bikeracks/get/2';// + args.markerName;
-      if (!marker.photos.length) {
-        $http.get(url).success(function(photos) {
-          marker.photos = photos.slice(0, 1);
-          marker.currentPhoto = marker.photos[0][0];
-        });
-      }
+      childscope.loading = true;
+      $http.get(url).success(function(photos) {
+        marker.photos = photos.slice(0, 1);
+        marker.currentPhoto = marker.photos[0][0];
+        childscope.loading = false;
+      });
       $compile(popupContent)(childscope, function(popupContentNode) {
         node.empty();
         node[0].appendChild(popupContentNode[0]);
