@@ -162,7 +162,7 @@ function takePhoto(id, callback) {
           layer: 'publicRacks',
           // Leaflet *hardcodes* popup size based on content.
           // This miserable hack is to force popups to be wide before the
-          // dynamic content has loaded so that leaflet doesn't force
+          // dynamic content has loaded so that leaflet doesn't squeeze
           // everything into a 20px column :(.
           message: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           id: id,
