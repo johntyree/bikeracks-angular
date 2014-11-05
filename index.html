@@ -24,6 +24,7 @@
     <link rel="stylesheet" type="text/css" href="css/style.css" />
 
     <!-- http://plnkr.co/edit/MAQ6AhpKeQqz84fH4iU5?p=preview -->
+    <!-- http://plnkr.co/edit/g4gTtmIrYQ8LWRKqgv0p?p=preview -->
   </head>
   <body>
     <div ng-controller='MapController as map'>
@@ -33,6 +34,42 @@
                  layers='map.layers'></leaflet>
       </div>
     </div>
+   <canvas id="resizeCanvas" display='hidden'></canvas>
+    <script>
+      function resizeImage(b64Image, callback) {
+        var canvas = document.getElementById('resizeCanvas');
+        var context = canvas.getContext('2d');
+        var imageObj = new Image();
+        imageObj.onload = function() {
+          var x = 0;
+          var y = 0;
+          max_width = 350;
+          max_height = 350;
+          width = imageObj.width;
+          height = imageObj.height;
+          w_ratio = width / max_width;
+          h_ratio = height / max_height;
+
+          if (w_ratio <= h_ratio && w_ratio >= 1.0) {
+            width /= w_ratio;
+            height /= w_ratio;
+          } else if (h_ratio >= 1.0) {
+            width /= h_ratio;
+            height /= h_ratio;
+          }
+
+          canvas.setAttribute('height', height);
+          canvas.setAttribute('width', width);
+          context.drawImage(imageObj, 0, 0, imageObj.width, imageObj.height,
+            0, 0, width, height);
+          var new_image = canvas.toDataURL();
+          callback(new_image);
+        };
+        imageObj.src = b64Image;
+      }
+    </script>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/modal-controllers.js"></script>
+    <script type="text/javascript" src="js/api.js"></script>
   </body>
 </html>
