@@ -4,106 +4,14 @@
 
 (function(_, L, angular) {
 
-  var app = angular.module('bikeracks', ['leaflet-directive', 'ui.bootstrap']);
+  var app = angular.module('bikeracks',
+    ['leaflet-directive', 'submit-modal', 'bikeracks-api']);
 
- // app.factory('GetContentService', function() {
-    // var service = {};
-
-    // service.getContent = function() {
-      // return {
-        // title: 'Hello',
-        // content: 'Some content, way to loooooooooooooonnnnnnnnnnnnngggggggggg.'
-      // };
-    // };
-    // return service;
-  // });
-
-  // app.directive('popup', function(GetContentService) {
-    // return {
-      // restrict: 'A',
-      // templateUrl: 'templates/marker-popup.html',
-      // scope: { content: {} },
-      // controller: function($scope, $timeout) {
-        // $scope.getContent = function() {
-          // // Simulate a call to the server to get data
-          // $timeout(function() {
-              // $scope.content = GetContentService.getContent();
-          // }, 200);
-        // };
-      // }
-    // };
-  // });
-
-  app.controller('SubmitModalCtrl', ['$scope', '$modal', '$log',
-                 function($scope, $modal, $log) {
-
-    $log.log($scope);
-
-    var marker = $scope.$parent.$parent.marker;
-
-    var photoChooser = $('#photo-chooser');
-    photoChooser.on('change', function() {
-      $log.log('change fired');
-      var file = photoChooser[0].files[0];
-      $log.log(file);
-      var reader = new FileReader();
-      reader.onload = function() {
-        $log.log('loaded');
-        var photoURL = reader.result;
-        var modalInstance = $modal.open({
-          templateUrl: 'templates/submit-modal.html',
-          controller: 'ModalInstanceCtrl',
-          size: '',
-          resolve: {
-            photoURL: function() {
-              return photoURL;
-            }
-          }
-        });
-
-        modalInstance.result.then(
-          function success(result) {
-            $log.log(result);
-            marker.photos.push(result);
-            marker.currentPhoto = result;
-          },
-          function failure(error) {
-            $log.log(error);
-          }
-        );
-      };
-      reader.onerror = function() {
-        alert('Error uploading file!');
-      };
-      reader.readAsDataURL(file);
-    });
-
-    $scope.takePhoto = function takePhoto() {
-      var id = marker.id;
-      $log.log('start', id);
-      photoChooser.click();
-    };
-
-  }]);
-
-  app.controller('ModalInstanceCtrl', ['$scope', '$modalInstance', 'photoURL',
-                 function($scope, $modalInstance, photoURL) {
-    $scope.candidatePhoto = photoURL;
-    $scope.submit = function() {
-      $modalInstance.close(photoURL);
-    };
-
-    $scope.cancel = function() {
-      $modalInstance.dismiss('Submission canceled.');
-    };
-  }]);
-
-  app.controller('MapController', ['$http', '$scope', '$compile',
-                 function($http, $scope, $compile) {
+  app.controller('MapController', ['$http', '$scope', '$compile', 'API',
+                 function($http, $scope, $compile, API) {
     var map = this;
 
-    var rootURL = 'http://john.bitsurge.net/bikeracks';
-    var rackURL = rootURL + '/static/data/austin_racks_v1.json';
+    var rootURL = API.root;
     var imageURL = rootURL + '/static/images';
     var options = {
       clusterIconUrl: imageURL + '/parking_bicycle_cluster_0.png',
@@ -178,13 +86,15 @@
       var marker = $scope.map.markers[args.markerName];
       childscope.marker = marker;
       var node = angular.element(args.leafletEvent.target._popup._contentNode);
-      var url = 'http://john.bitsurge.net/bikeracks/get/2';// + args.markerName;
+      var url = 'http://john.bitsurge.net/bikeracks/rack/2';// + args.markerName;
       childscope.loading = true;
       if (!marker.photos.length) {
-          $http.get(url).success(function(photos) {
-            marker.photos = photos;
-            marker.currentPhoto = _.last(marker.photos)[0];
-            childscope.loading = false;
+          API.get({'rack_id': marker.id}).$promise.then(
+            function(obj) {
+              console.log(obj);
+              marker.photos = obj.data || [];
+              marker.currentPhoto = _.last(marker.photos);
+              childscope.loading = false;
           });
       } else {
         marker.currentPhoto = marker.currentPhoto || _.last(marker.photos)[0];
@@ -197,9 +107,10 @@
     });
 
     map.markers = [];
-    $http.get(rackURL).success(function(json) {
+    console.log(API);
+    API.getRacks().$promise.then(function(json) {
       map.markers = _.map(json, function(rack) {
-        function f(n) { return Math.floor(n*1e6).toString() }
+        function f(n) { return Math.floor(n * 1e6).toString(); }
         var id = f(rack.lat) + f(rack.lng);
         return {
           layer: 'publicRacks',
@@ -211,7 +122,7 @@
           id: id,
           address: rack.address,
           photos: [],
-          currentPhoto: "",
+          currentPhoto: '',
           lat: rack.lat,
           lng: rack.lng,
           icon: {
